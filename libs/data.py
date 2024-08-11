@@ -1,12 +1,17 @@
 import requests
 from requests.exceptions import RequestException
+from dotenv import load_dotenv
+import os
 
-def get_posts():
-    url = 'https://api.myanimelist.net/v2/anime?q=one&limit=4'
+load_dotenv()
+
+def get_response():
+    CLIENT_ID = os.getenv("CLIENT_ID") # Client ID from the API
+    url = '<Request-url>' # URL of the API endpoint
 
     try:
         # Make a GET request to the API endpoint using requests.get()
-        response = requests.get(url)
+        response = requests.get(url, headers={'X-MAL-CLIENT-ID': CLIENT_ID})
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
@@ -23,16 +28,16 @@ def get_posts():
     
 def main():
 
-    posts = get_posts()
+    res = get_response()
 
-    if posts:
-        # Print the number of posts
-        print("Number of posts:", len(posts))
+    if res:
+        # Print the number of responses
+        print("Number of res:", len(res))
         # Print the first post
-        print("First post:", posts[0])
+        print(res['data'][0])
 
     else:
-        print("No posts found")
+        print("No res found")
 
 if __name__ == "__main__":
     main()
