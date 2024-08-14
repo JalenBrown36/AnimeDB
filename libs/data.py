@@ -1,5 +1,4 @@
-import requests
-from requests.exceptions import RequestException
+import httpx
 from dotenv import load_dotenv
 import os
 
@@ -8,10 +7,11 @@ load_dotenv()
 def get_response():
     CLIENT_ID = os.getenv("CLIENT_ID") # Client ID from the API
     url = '<Request-url>' # URL of the API endpoint
+    header = {'X-MAL-CLIENT-ID': CLIENT_ID}
 
     try:
         # Make a GET request to the API endpoint using requests.get()
-        response = requests.get(url, headers={'X-MAL-CLIENT-ID': CLIENT_ID})
+        response = httpx.get(url, headers=header)
 
         # Check if the request was successful (status code 200)
         if response.status_code == 200:
@@ -21,7 +21,7 @@ def get_response():
             print("Error status code:", response.status_code)
             return None
     
-    except RequestException as e:
+    except httpx.RequestError as e:
         # Handle any network-related errors or exceptions
         print("Error:", e)
         return None
